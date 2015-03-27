@@ -82,7 +82,8 @@ class Game(object):
         sprites = pygame.sprite.Group()
 
         pygame.mixer.init()
-        waiting_sound= pygame.mixer.Sound("../resources/crickets.wav")
+        waiting_sound = pygame.mixer.Sound("../resources/crickets.wav")
+        shutter_sound = pygame.mixer.Sound("../resources/Shutter-01.wav")
 
         # event loop (a framework like piglet has this built in I believe)
         while 1:
@@ -100,6 +101,7 @@ class Game(object):
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     print(self.work_dir+os.sep+'{}_snapya.jpg'.format(self.num_images))
                     pygame.image.save(self.snap_cam.snapshot, self.work_dir+os.sep+'{}_snapya.jpg'.format(self.num_images))
+                    shutter_sound.play()
                     self.num_images += 1
                     #self.image = self.snap_cam.take_picture()
                     #SnapyaImage(sprites)
