@@ -110,6 +110,7 @@ class Game(object):
                     self.animator.run(self.work_dir, self.archive_dir, True )
                     self.snap_cam.cam.stop()
                     screen.fill((0, 0, 0))
+                    waiting_sound.stop()
                     return
 
             screen.fill((0, 0, 0))
