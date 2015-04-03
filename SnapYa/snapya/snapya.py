@@ -3,7 +3,7 @@ __author__ = 'randall'
 import pygame
 import pygame.camera
 import os
-from services.image_processor import ImageProcessor
+from services.images import AnimatedGifMaker
 from pygame.locals import *
 
 
@@ -72,7 +72,7 @@ class Game(object):
         ensure_dir(self.work_dir)
         ensure_dir(self.archive_dir)
         self.num_images = 1
-        self.animator = ImageProcessor()
+        self.animator = AnimatedGifMaker()
 
 
     def main(self, screen):
@@ -84,6 +84,12 @@ class Game(object):
         pygame.mixer.init()
         waiting_sound = pygame.mixer.Sound("../resources/crickets.wav")
         shutter_sound = pygame.mixer.Sound("../resources/Shutter-01.wav")
+
+        font = pygame.font.Font(None, 36)
+        processing_text = font.render("Making Snap-ya", 1, (255, 255, 255))
+        snap_text = font.render("Snap", 1, (255, 255, 255))
+        textpos = processing_text.get_rect()
+        textpos.centerx = screen.get_rect().centerx
 
         # event loop (a framework like piglet has this built in I believe)
         while 1:
@@ -98,16 +104,21 @@ class Game(object):
                     self.snap_cam.cam.stop()
                     screen.fill((0, 0, 0))
                     return
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE or event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    screen.blit(snap_text, textpos)
+                    screen.fill((0, 0, 0))
+                    pygame.display.flip()
                     print(self.work_dir+os.sep+'{}_snapya.jpg'.format(self.num_images))
                     pygame.image.save(self.snap_cam.snapshot, self.work_dir+os.sep+'{}_snapya.jpg'.format(self.num_images))
                     shutter_sound.play()
                     self.num_images += 1
                     #self.image = self.snap_cam.take_picture()
                     #SnapyaImage(sprites)
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                if (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or (event.type == pygame.MOUSEBUTTONDOWN and event.button == 3):
                     waiting_sound.play()
-                    self.animator.run(self.work_dir, self.archive_dir, True )
+                    screen.blit(processing_text, textpos)
+                    pygame.display.flip()
+                    self.animator.main(self.work_dir, self.archive_dir, True )
                     self.snap_cam.cam.stop()
                     screen.fill((0, 0, 0))
                     waiting_sound.stop()
