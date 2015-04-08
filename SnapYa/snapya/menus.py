@@ -38,6 +38,6 @@ if __name__ == '__main__':
     pygame.init()
 
     # would full screen be better for an event? pygame.RESIZABLE or pygame.FULLSCREEN
-    screen = pygame.display.set_mode((1280, 960))
+    screen = pygame.display.set_mode((1280, 960), pygame.FULLSCREEN)
     pygame.display.set_caption("Snap-ya")
     Menu().main(screen)
