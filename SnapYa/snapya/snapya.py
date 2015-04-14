@@ -3,7 +3,7 @@ __author__ = 'randall'
 import pygame
 import pygame.camera
 import os
-from services.images import AnimatedGifMaker
+from services.imagelib import AnimatedGifMaker
 from pygame.locals import *
 
 
